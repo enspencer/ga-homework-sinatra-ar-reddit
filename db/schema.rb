@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131013002457) do
+ActiveRecord::Schema.define(version: 20131013021014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,8 +19,9 @@ ActiveRecord::Schema.define(version: 20131013002457) do
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "upvotes",    default: 0
-    t.integer  "downvotes",  default: 0
+    t.integer  "upvotes",       default: 0
+    t.integer  "downvotes",     default: 0
+    t.integer  "submission_id"
   end
 
   create_table "submissions", force: true do |t|
@@ -28,8 +29,9 @@ ActiveRecord::Schema.define(version: 20131013002457) do
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "upvotes",    default: 0
-    t.integer  "downvotes",  default: 0
+    t.integer  "upvotes",      default: 0
+    t.integer  "downvotes",    default: 0
+    t.integer  "subreddit_id"
   end
 
   create_table "subreddits", force: true do |t|

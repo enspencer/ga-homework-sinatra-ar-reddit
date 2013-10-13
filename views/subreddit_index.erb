@@ -1,0 +1,7 @@
+<h2><%= @subreddit.topic %></h2>
+<div><a href="/r/<%= params[:topic] %>/new">Submit a link or URL</a></div>
+
+<% @subreddit.submissions.each do |submission| %>
+	<a href="/r/<%= @subreddit.topic %>/<%= submission.id %>"><%= submission.link %></a>
+	<a href="/r/<%= @subreddit.topic %>/<%= submission.id %>"><%= submission.text %></a>
+<% end %>

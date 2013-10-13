@@ -1,0 +1,6 @@
+<% @subreddits.each do |subreddit| %>
+<li><a href="/r/<%= subreddit.topic %>"><%= subreddit.topic %></a></li>
+<% end %>
+</ul>
+
+<div><a href="/new">Create a new subreddit</a></div>

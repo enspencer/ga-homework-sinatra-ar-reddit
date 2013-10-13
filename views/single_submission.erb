@@ -1,0 +1,14 @@
+<%= @submission.link %>
+<%= @submission.text %>
+
+Submit a Comment:
+<form action="/comment/:submission_id/new" method="post">
+
+<textarea name="body" cols=40 rows=10></textarea>
+<button type="submit">Add Comment</button>
+</form>
+
+Comments:
+<% @submission.comments.each do |comment| %>
+<%= comment.body %>
+<% end %>

@@ -81,3 +81,11 @@ end
 
  	redirect '/'
  end
+
+ post "/:topic/:submission_id/new" do
+ 	@topic = params[:topic]
+ 	@submission = Submission.find(params[:submission_id])
+ 	@submission.comments.create(body: body)
+
+ 	redirect "/r/:topic"
+ end

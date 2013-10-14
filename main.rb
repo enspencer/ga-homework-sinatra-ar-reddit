@@ -31,21 +31,28 @@ get '/new' do
 end
 
 get '/newest' do
+	@subreddits = Subreddit.all
+	@subreddits.order("timestamps DESC")
 	erb :reddit_by_newest
 end
 
 get '/r/:topic/new' do
+	@subreddits = Subreddit.all
 	@topic = params[:topic]
 	erb :submission_new
 end
 
 get '/r/:topic/newest' do
+	@subreddits = Subreddit.all
 	topic = params[:topic]
+	@subreddit = Subreddit.find_by topic: params[:topic]
+	@subreddit.order("upvotes DESC")
 	erb :subreddit_by_newest
 end
 
 # having trouble with this
 get '/r/:topic/:submission_id' do
+	@subreddits = Subreddit.all
 	@topic = params[:topic]
 	@submission_id = params[:submission_id]
 	@subreddit = Subreddit.find_by topic: params[:topic]
@@ -55,13 +62,14 @@ get '/r/:topic/:submission_id' do
 end
 
 get '/r/:topic' do
+	@subreddits = Subreddit.all
 	topic = params[:topic]
 	@subreddit = Subreddit.find_by topic: params[:topic]
 	erb :subreddit_index
 end
 
-# having trouble
 post "/:topic/submission_new" do
+	@subreddits = Subreddit.all
 	if params[:link] != "" && params[:text] != ""
 		redirect '/r/:topic/new'
 	elsif params[:link] == "" && params[:text] == ""
@@ -78,14 +86,54 @@ end
  post "/subreddit_new" do
  	topic = params[:topic]
  	@subreddit = Subreddit.create(topic: topic)
-
  	redirect '/'
  end
 
- post "/:topic/:submission_id/new" do
- 	@topic = params[:topic]
+ post "/comment/:submission_id/new" do
  	@submission = Submission.find(params[:submission_id])
  	@submission.comments.create(body: body)
+ 	topic = Subreddit.find(params[:@submission.subreddit_id])
 
- 	redirect "/r/:topic"
+ 	redirect "/r/#{topic}"
  end
+
+
+post '/:topic/:submission_id/upvotes' do
+	@topic = params[:topic]
+	@subreddit = Subreddit.find_by topic: @topic
+	@submission_id = params[:submission_id]
+	upvoted = Submission.find(params[:submission_id])
+	upvoted[:upvotes] += 1
+	upvoted.save
+	redirect "/r/#{@subreddit.topic}"
+end
+
+post '/:topic/:submission_id/downvotes' do
+	@topic = params[:topic]
+	@subreddit = Subreddit.find_by topic: @topic
+	@submission_id = params[:submission_id]
+	downvoted = Submission.find(params[:submission_id])
+	downvoted[:downvotes] += 1
+	downvoted.save
+	redirect "/r/#{@subreddit.topic}"
+end
+
+post '/comment/:submission_id/upvotes' do
+	@submission_id = params[:submission_id]
+	@submission = Submission.find(params[:submission_id])
+	topic = Subreddit.find(@submission.subreddit_id)
+	upvoted = Comment.find(params[:submission_id])
+	upvoted[:upvotes] += 1
+	upvoted.save
+	redirect "/r/:topic/:submission_id"
+end
+
+post '/comment/:submission_id/downvotes' do
+	@submission_id = params[:submission_id]
+	@submission = Submission.find(params[:submission_id])
+	@topic = Subreddit.find(@submission.subreddit_id)
+	downvoted = Comment.find(params[:submission_id])
+	downvoted[:downvotes] += 1
+	downvoted.save
+	redirect "/r/:topic/:submission_id"
+end

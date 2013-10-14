@@ -1,14 +1,20 @@
-<%= @submission.link %>
-<%= @submission.text %>
+<% @subreddits.each do |subreddit| %>
+	<li><a href="/r/<%= subreddit.topic %>"><%= subreddit.topic %></a></li>
+<% end %>
+</ul>
 
-Submit a Comment:
-<form action="/comment/:submission_id/new" method="post">
+<div>
+	<%= @submission.link %><%= @submission.text %>
+</div>
 
-<textarea name="body" cols=40 rows=10></textarea>
-<button type="submit">Add Comment</button>
-</form>
+<div>Submit a Comment:
+	<form action="/comment/:submission_id/new" method="post">
+		<textarea name="body" cols=40 rows=10></textarea>
+		<button type="submit">Add Comment</button>
+	</form>
+</div>
 
 Comments:
 <% @submission.comments.each do |comment| %>
-<%= comment.body %>
+	<%= comment.body %>
 <% end %>

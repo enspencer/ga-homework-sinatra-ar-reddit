@@ -96,6 +96,50 @@ end
  	redirect '/'
  end
 
+post '/comment/:comment_id/upvotes' do
+	# @comment_id = params[:comment_id]
+	@upvoted_comment = Comment.find(params[:comment_id])
+	@submission= Submission.find(@upvoted_comment.submission_id)
+	@topic = Subreddit.find(@submission.subreddit_id)
+	@topic = @topic.topic
+	@upvoted_comment[:upvotes] += 1
+	@upvoted_comment.save
+	redirect "/r/#{@topic}/#{@submission.id}"
+end
+
+post '/comment/:comment_id/downvotes' do
+	# @comment_id = params[:comment_id]
+	@downvoted_comment = Comment.find(params[:comment_id])
+	@submission= Submission.find(@downvoted_comment.submission_id)
+	@topic = Subreddit.find(@submission.subreddit_id)
+	@topic = @topic.topic
+	@downvoted_comment[:downvotes] += 1
+	@downvoted_comment.save
+	redirect "/r/#{@topic}/#{@submission.id}"
+end
+
+post "/comment/:submission_id/new" do
+	@submission_id = params[:submission_id]
+ 	@submission = Submission.find(params[:submission_id])
+ 	id = @submission.subreddit_id
+ 	@topic = Subreddit.find(id)
+ 	@topic = @topic.topic
+ 	@submission.comments.create(:body => params[:body])
+
+ 	redirect "/r/#{@topic}/#{@submission.id}"
+ end
+
+post "/comment/:comment_id/delete" do
+	# @comment_id = params[:comment_id]
+	@comment = Comment.find(params[:comment_id])
+	@submission = Submission.find(@comment.submission_id)
+	@topic = Subreddit.find(@submission.subreddit_id)
+	@topic = @topic.topic
+	@comment.delete
+
+	redirect "/r/#{@topic}/#{@submission.id}"
+end
+
 post '/:topic/:submission_id/upvotes' do
 	@topic = params[:topic]
 	@subreddit = Subreddit.find_by topic: @topic
@@ -118,63 +162,4 @@ post '/:topic/:submission_id/downvotes' do
 	downvoted[:downvotes] += 1
 	downvoted.save
 	redirect "/r/#{@topic}"
-end
-
-post '/comment/:submission_id/:comment_id/upvotes' do
-	@submission_id = params[:submission_id]
-	@comment_id = params[:comment_id]
-	@submission = Submission.find(params[:submission_id])
-	upvoted_comment = Comment.find(params[:submission_id])
-	@topic = Subreddit.find(upvoted.submission_id)
-	@topic = @topic.topic
-	upvoted_comment[:upvotes] += 1
-	upvoted_comment.save
-	redirect "/r/#{@topic}/#{@submission_id}"
-end
-
-post '/comment/:submission_id/:comment_id/downvotes' do
-	@submission_id = params[:submission_id]
-	@comment_id = params[:comment_id]
-	@submission = Submission.find(params[:submission_id])
-	@topic = Subreddit.find(@submission.subreddit_id)
-	@topic = @topic.topic
-	downvoted_comment = Comment.find(params[:submission_id])
-	@topic = Subreddit.find(downvoted.submission_id)
-	@topic = @topic.topic
-	downvoted_comment[:downvotes] += 1
-	downvoted_comment.save
-	redirect "/r/#{@topic}/#{@submission_id}"
-end
-
-post "/comment/:submission_id/:comment_id/new" do
-	@submission_id = params[:submission_id]
-	@comment_id = params[:comment_id]
- 	@submission = Submission.find(params[:submission_id])
- 	id = @submission.subreddit_id
- 	@topic = Subreddit.find(id)
- 	@topic = @topic.topic
- 	@submission.comments.create(:body => params[:body])
-
- 	redirect "/r/#{@topic}/#{@submission_id}"
- end
-
-post "/comment/:submission_id/:comment_id/delete" do
-	@submission_id = params[:submission_id]
-	@comment_id = params[:comment_id]
-	@submission = Submission.find(@submission_id)
-	@submission.comments.delete
-	@topic = Subreddit.find(@submission.subreddit_id)
-	@topic = @topic.topic
-
-	redirect "/r/#{@topic}/#{@submission_id}"
-end
-
-post "/:submission_id/:comment_id/delete" do
-	@submission_id = params[:submission_id]
-	@submission = Submission.find(@submission_id)
-	id = @submission.subreddit_id
-	topic = Subreddit.find(id).topic
-	@submission.delete
-
-	redirect "/r/#{topic}"
 end

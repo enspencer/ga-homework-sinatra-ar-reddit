@@ -24,15 +24,15 @@ Comments:
 Downvotes: <%= comment.downvotes %>
 </div>
 	<div class="votes">
-		<form action="/comment/<%= comment.submission_id %>/<%=comment.id %>/upvotes" method="post"><input type="submit" name="upvoted_comment" value="upvote" />
+		<form action="/comment/<%= comment.id %>/upvotes" method="post"><input type="submit" name="upvoted_comment" value="upvote" />
 		</form>
 
-		<form action="/comment/<%= comment.submission_id %>/<%=comment.id %>/downvotes" method="post"><input type="submit" name="downvoted_comment" value="downvote" />
+		<form action="/comment/<%= comment.id %>/downvotes" method="post"><input type="submit" name="downvoted_comment" value="downvote" />
 		</form>
 	</div>
 
-	<form action="/comment/<%= comment.submission_id %>/<%=comment.id %>/delete" method="post"><input type="submit" name="delete comment" value="delete" />
-</form>
+	<form action="/comment/<%= comment.id %>/delete" method="post"><input type="submit" name="delete" value="delete" />
+	</form>
 
 <% end %>
 

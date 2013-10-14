@@ -2,3 +2,9 @@
 <li><a href="/r/<%= subreddit.topic %>"><%= subreddit.topic %></a></li>
 <% end %>
 </ul>
+
+
+<% @subreddit.submissions.each do |submission| %>
+<div><%= submission.link %>
+<%= submission.text %></div>
+<% end %>

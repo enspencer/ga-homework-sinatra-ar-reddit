@@ -7,8 +7,11 @@
 	<%= @submission.link %><%= @submission.text %>
 </div>
 
+<form action="/<%= @submission_id %>/delete" method="post"><input type="submit" name="delete story" value="delete" />
+</form>
+
 <div>Submit a Comment:
-	<form action="/comment/:submission_id/new" method="post">
+	<form action="/comment/<%= @submission_id %>/new" method="post">
 		<textarea name="body" cols=40 rows=10></textarea>
 		<button type="submit">Add Comment</button>
 	</form>
@@ -16,5 +19,20 @@
 
 Comments:
 <% @submission.comments.each do |comment| %>
-	<%= comment.body %>
+	<div><%= comment.body %></div>
+<div>Upvotes: <%= comment.upvotes %>
+Downvotes: <%= comment.downvotes %>
+</div>
+	<div class="votes">
+		<form action="/comment/<%= comment.submission_id %>/<%=comment.id %>/upvotes" method="post"><input type="submit" name="upvoted_comment" value="upvote" />
+		</form>
+
+		<form action="/comment/<%= comment.submission_id %>/<%=comment.id %>/downvotes" method="post"><input type="submit" name="downvoted_comment" value="downvote" />
+		</form>
+	</div>
+
+	<form action="/comment/<%= comment.submission_id %>/<%=comment.id %>/delete" method="post"><input type="submit" name="delete comment" value="delete" />
+</form>
+
 <% end %>
+

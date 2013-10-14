@@ -6,9 +6,15 @@
 	<title>Reddit</title>
 </head>
 <body>
+<div class="header">
+<a href="/"><h1>Reddit</h1></a>
 <ul>
-<li><a href="/"><h1>Reddit</h1></a></li>
 <li><a href="/newest">Newest submissions</a></li>
+<% @subreddits.each do |subreddit| %>
+	<li><a href="/r/<%= subreddit.topic %>"><%= subreddit.topic %></a></li>
+<% end %>
+</ul>
+</div>
 <%= yield %>
 </body>
 </html>

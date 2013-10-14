@@ -1,6 +1,11 @@
-<% @subreddits.each do |subreddit| %>
-	<li><a href="/r/<%= subreddit.topic %>"><%= subreddit.topic %></a></li>
+<h2>All Submissions</h2>
+
+<div>
+<% @subreddits.each do |topic| %>
+<% new_id = topic.id %>
+<% submission = Submission.find_by subreddit_id: new_id %>
+<div class="main_topics"><a href="/r/<%= topic.topic %>/<%= submission.id %>"><%= submission.link %><%= submission.text %></a></div>
 <% end %>
-</ul>
+</div>
 
 <div><a href="/new">Create a new subreddit</a></div>

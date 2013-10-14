@@ -1,12 +1,8 @@
-<!-- top nav -->
-<% @subreddits.each do |subreddit| %>
-<li><a href="/r/<%= subreddit.topic %>"><%= subreddit.topic %></a></li>
-<% end %>
-</ul>
-
 <h2><%= @subreddit.topic %></h2>
-<a href="/r/<%= params[:topic] %>/newest">Newest submissions in this subreddit</a>
-<div><a href="/r/<%= params[:topic] %>/new">Submit a link or URL</a></div>
+<div class="submission_header">
+<span><a href="/r/<%= params[:topic] %>/newest">Newest submissions in this subreddit</a></span>
+<span><a href="/r/<%= params[:topic] %>/new">Submit a link or URL</a></span>
+</div>
 
 <% @subreddit.submissions.each do |submission| %>
 	<a href="/r/<%= @topic %>/<%= submission.id %>"><%= submission.link %></a>

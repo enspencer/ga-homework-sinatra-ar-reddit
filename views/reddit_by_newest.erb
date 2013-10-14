@@ -1,13 +1,8 @@
-<% @subreddits.each do |subreddit| %>
-<li><a href="/r/<%= subreddit.topic %>"><%= subreddit.topic %></a></li>
-<% end %>
-</ul>
-
+<h2>Newest submissions</h2>
 <div>
 <% @subreddits.each do |topic| %>
 <% new_id = topic.id %>
 <% submission = Submission.find_by subreddit_id: new_id %>
-<div><%= submission.link %></div>
-<div><%= submission.text %></div>
+<div class="main_topics"><a href="/r/<%= topic.topic %>/<%= submission.id %>"><%= submission.link %><%= submission.text %></a></div>
 <% end %>
 </div>

@@ -1,8 +1,3 @@
-<% @subreddits.each do |subreddit| %>
-<li><a href="/r/<%= subreddit.topic %>"><%= subreddit.topic %></a></li>
-<% end %>
-</ul>
-
 <form action="/subreddit_new" method="post">
 	<div>Topic: <input type="text" name="topic" /></div>
 	<button type="submit">Submit</button>
